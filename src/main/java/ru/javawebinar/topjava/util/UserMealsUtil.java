@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.Month;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * GKislin
@@ -24,6 +25,7 @@ public class UserMealsUtil {
                 new UserMeal(LocalDateTime.of(2015, Month.MAY, 31,20,0), "Ужин", 510)
         );
         getFilteredWithExceeded(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
+        getFilteredWithExceededByStream(mealList, LocalTime.of(7, 0), LocalTime.of(12,0), 2000);
 
 
     }
@@ -48,6 +50,21 @@ public class UserMealsUtil {
         }
 
         return userMealWithExceeds;
+    }
+
+    public static List<UserMealWithExceed>  getFilteredWithExceededByStream(List<UserMeal> mealList, LocalTime startTime, LocalTime endTime, int caloriesPerDay) {
+
+
+
+        Map<LocalDate, IntSummaryStatistics> caloriesSumPerDay = mealList
+                .stream()
+                .collect(Collectors.groupingBy((m) -> m.getDateTime().toLocalDate(), Collectors.summarizingInt(UserMeal::getCalories)));
+
+
+        return mealList.stream()
+                .filter(e -> TimeUtil.isBetween(e.getDateTime().toLocalTime(), startTime, endTime))
+                .map(meal -> new UserMealWithExceed(meal, caloriesSumPerDay.get(meal.getDateTime().toLocalDate()).getSum() > caloriesPerDay ? true : false))
+                .collect(Collectors.toList());
     }
 
 }
