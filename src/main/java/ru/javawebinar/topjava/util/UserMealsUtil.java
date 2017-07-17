@@ -33,14 +33,14 @@ public class UserMealsUtil {
         List<UserMealWithExceed> userMealWithExceeds = new ArrayList<>();
 
 
-        Map<LocalDate, Integer> map = new HashMap<>();
+        Map<LocalDate, Integer> caloriesSumPerDay = new HashMap<>();
         for (UserMeal userMeal: mealList) {
-            map.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (prevValue, newValue ) -> (prevValue + newValue));
+            caloriesSumPerDay.merge(userMeal.getDateTime().toLocalDate(), userMeal.getCalories(), (prevValue, newValue ) -> (prevValue + newValue));
         }
 
         for (UserMeal userMeal: mealList){
             if (TimeUtil.isBetween(userMeal.getDateTime().toLocalTime(), startTime, endTime))
-            if (map.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay){
+            if (caloriesSumPerDay.get(userMeal.getDateTime().toLocalDate()) > caloriesPerDay){
                 userMealWithExceeds.add(new UserMealWithExceed(userMeal, true));
             }else{
                 userMealWithExceeds.add(new UserMealWithExceed(userMeal, false));
