@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.service.MealService;
+import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.MealsUtil;
 
 import static ru.javawebinar.topjava.util.ValidationUtil.checkIdConsistent;
 import static ru.javawebinar.topjava.util.ValidationUtil.checkNew;
@@ -21,9 +23,10 @@ public class MealRestController {
     @Autowired
     private MealService service;
 
-    public Collection<Meal> getAll(){
+    public Collection<MealWithExceed> getAll(){
          log.info("getAll");
-         return service.getAll(AuthorizedUser.id());
+         Collection<Meal> meals = service.getAll(AuthorizedUser.id());
+         return MealsUtil.getWithExceeded(meals, AuthorizedUser.getCaloriesPerDay());
     }
 
     public Meal get(int id){
@@ -34,7 +37,7 @@ public class MealRestController {
 
     public Meal create(Meal meal){
         log.info("create {}", meal);
-       checkNew(meal);
+        checkNew(meal);
         return service.save(meal, AuthorizedUser.id());
     }
 

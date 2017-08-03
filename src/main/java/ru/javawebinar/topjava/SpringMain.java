@@ -5,6 +5,8 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
+import ru.javawebinar.topjava.to.MealWithExceed;
+import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 import ru.javawebinar.topjava.web.user.AdminRestController;
 
@@ -22,7 +24,8 @@ public class SpringMain {
             List<User> allUsers = adminUserController.getAll();
             allUsers.forEach(System.out::println);
             MealRestController mealRestController = appCtx.getBean(MealRestController.class);
-            Collection<Meal> meals = mealRestController.getAll();
+            Collection<MealWithExceed> meals = mealRestController.getAll();
+            mealRestController.update(MealsUtil.MEALS.get(2),3);
             meals.stream().forEach(System.out::println);
         }
     }

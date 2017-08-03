@@ -47,5 +47,28 @@
         </c:forEach>
     </table>
 </section>
+<hr/><table>
+   <form method="get" action="meals">
+    <tr>
+        <td>
+    <input type="date" name="firstDate"/> <br>
+    <br>
+    <input type="date" name="secondDate"/>
+    <input type="submit" value="Filter by date"> <br>
+    <br></td>
+</form>
+        <form method="get" action="meals?filter" name="filter">
+    <td>
+            <input type="time" name="firstTime"/> <br>
+            <br>
+            <input type="time" name="secondTime"/>
+            <input type="submit" value="Filter by time"> <br>
+            <br></td>
+        </form>
+    </tr>
+
+
+
+</table>
 </body>
 </html>
