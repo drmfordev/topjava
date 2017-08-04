@@ -48,19 +48,22 @@
     </table>
 </section>
 <hr/><table>
-   <form method="get" action="meals">
     <tr>
+   <form method="get" action="meals">
+
         <td>
     <input type="date" name="firstDate"/> <br>
     <br>
     <input type="date" name="secondDate"/>
+            <input hidden value="date" name="filter">
     <input type="submit" value="Filter by date"> <br>
     <br></td>
 </form>
-        <form method="get" action="meals?filter" name="filter">
+        <form method="get" action="meals?action" name="filter">
     <td>
             <input type="time" name="firstTime"/> <br>
             <br>
+            <input hidden value="time" name="filter">
             <input type="time" name="secondTime"/>
             <input type="submit" value="Filter by time"> <br>
             <br></td>

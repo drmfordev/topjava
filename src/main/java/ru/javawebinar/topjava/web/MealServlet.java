@@ -8,6 +8,7 @@ import ru.javawebinar.topjava.AuthorizedUser;
 import ru.javawebinar.topjava.model.Meal;
 import ru.javawebinar.topjava.repository.MealRepository;
 import ru.javawebinar.topjava.repository.mock.InMemoryMealRepositoryImpl;
+import ru.javawebinar.topjava.to.MealWithExceed;
 import ru.javawebinar.topjava.util.MealsUtil;
 import ru.javawebinar.topjava.web.meal.MealRestController;
 
@@ -19,6 +20,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
 
 public class MealServlet extends HttpServlet {
@@ -53,8 +56,16 @@ public class MealServlet extends HttpServlet {
                 request.getParameter("description"),
                 Integer.valueOf(request.getParameter("calories")));
 
+
         log.info(meal.isNew() ? "Create {}" : "Update {}", meal);
-        controller.create(meal);
+        if (meal.isNew()){
+            controller.create(meal);
+        }else{
+            meal.setUserId(Integer.parseInt(request.getParameter("userId")));
+            controller.update(meal, Integer.parseInt(id));
+
+        }
+
         response.sendRedirect("meals");
     }
 
@@ -80,6 +91,34 @@ public class MealServlet extends HttpServlet {
             case "all":
             default:
                 log.info("getAll");
+                String filter = request.getParameter("filter");
+                boolean flag = false;
+                if (filter != null){
+                    Collection<MealWithExceed> mealWithExceeds = Collections.EMPTY_LIST;
+                    if (filter.equalsIgnoreCase("time")){
+                        String firstTime = request.getParameter("firstTime");
+                        String secondTime = request.getParameter("secondTime");
+
+                        if (firstTime != null && !firstTime.isEmpty() && secondTime != null && !secondTime.isEmpty() ){
+                          mealWithExceeds =  controller.getAllByTime(firstTime, secondTime);
+                          flag = true;
+                        }
+
+                    }else if (filter.equalsIgnoreCase("date")){
+                        String firstDate = request.getParameter("firstDate");
+                        String secondDate = request.getParameter("secondDate");
+
+                        if (firstDate != null && !firstDate.isEmpty() && secondDate != null && !secondDate.isEmpty() ){
+                            mealWithExceeds = controller.getAllByDate(firstDate, secondDate);
+                            flag = true;
+                        }
+                    }
+                    if (flag) {
+                        request.setAttribute("meals",
+                                mealWithExceeds);
+                        request.getRequestDispatcher("/meals.jsp").forward(request, response);
+                    }
+                }
                 request.setAttribute("meals",
                         controller.getAll());
                 request.getRequestDispatcher("/meals.jsp").forward(request, response);
