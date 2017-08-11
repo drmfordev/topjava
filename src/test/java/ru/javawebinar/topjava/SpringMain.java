@@ -27,7 +27,7 @@ public class SpringMain {
             List<MealWithExceed> filteredMealsWithExceeded =
                     mealController.getBetween(
                             LocalDate.of(2015, Month.MAY, 30), LocalTime.of(7, 0),
-                            LocalDate.of(2015, Month.MAY, 31), LocalTime.of(11, 0));
+                            LocalDate.of(2018, Month.MAY, 31), LocalTime.of(22, 0));
             filteredMealsWithExceeded.forEach(System.out::println);
         }
     }

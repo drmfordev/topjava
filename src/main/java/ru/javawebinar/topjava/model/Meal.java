@@ -26,6 +26,12 @@ public class Meal extends BaseEntity {
         this.calories = calories;
     }
 
+    public Meal(Meal meal){
+        this.id = meal.getId();
+        this.calories = meal.getCalories();
+        this.description = meal.getDescription();
+        this.dateTime = meal.getDateTime();
+    }
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
