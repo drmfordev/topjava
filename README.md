@@ -1,6 +1,6 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/347421f389a14398845827d1ccf58095)](https://www.codacy.com/app/drmfordev/topjava?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=drmfordev/topjava&amp;utm_campaign=Badge_Grade)
-[![Dependency Status](https://dependencyci.com/github/drmfordev/topjava/badge)](https://dependencyci.com/github/drmfordev/topjava)
 [![Build Status](https://travis-ci.org/drmfordev/topjava.svg?branch=master)](https://travis-ci.org/drmfordev/topjava)
+[![Dependency Status](https://dependencyci.com/github/drmfordev/topjava/badge)](https://dependencyci.com/github/drmfordev/topjava)
 
 Java Enterprise Online Project 
 ===============================
