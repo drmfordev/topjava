@@ -66,4 +66,9 @@ public class UserServiceImpl implements UserService {
     public void evictCache() {
         // only for evict cache
     }
+
+    @Override
+    public User getWithMeals(int id) {
+        return repository.getWithMeals(id);
+    }
 }
