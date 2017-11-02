@@ -1,9 +1,13 @@
 package ru.javawebinar.topjava.service;
 
+import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.dao.DataAccessException;
+import org.springframework.test.annotation.DirtiesContext;
+import ru.javawebinar.topjava.Profiles;
 import ru.javawebinar.topjava.model.Role;
 import ru.javawebinar.topjava.model.User;
 import ru.javawebinar.topjava.repository.JpaUtil;
@@ -21,14 +25,11 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     @Autowired
     protected UserService service;
 
-    @Autowired
-    protected JpaUtil jpaUtil;
 
-    @Before
-    public void setUp() throws Exception {
-        service.evictCache();
-        jpaUtil.clear2ndLevelHibernateCache();
-    }
+    @Autowired
+    protected Environment environment;
+
+
 
     @Test
     public void testCreate() throws Exception {
@@ -72,6 +73,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
     }
 
     @Test
+    @DirtiesContext
     public void testGetAll() throws Exception {
         Collection<User> all = service.getAll();
         MATCHER.assertCollectionEquals(Arrays.asList(ADMIN, USER), all);
@@ -88,6 +90,7 @@ public abstract class AbstractUserServiceTest extends AbstractServiceTest {
 
     @Test
     public void testValidation() throws Exception {
+        Assume.assumeFalse(environment.acceptsProfiles(Profiles.JDBC));
         validateRootCause(() -> service.create(new User(null, "  ", "mail@yandex.ru", "password", Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "  ", "password", Role.ROLE_USER)), ConstraintViolationException.class);
         validateRootCause(() -> service.create(new User(null, "User", "mail@yandex.ru", "  ", Role.ROLE_USER)), ConstraintViolationException.class);

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.bridge.SLF4JBridgeHandler;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.jdbc.Sql;
@@ -28,6 +29,7 @@ import static org.hamcrest.CoreMatchers.instanceOf;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ActiveProfiles(resolver = ActiveDbProfileResolver.class)
 @Sql(scripts = "classpath:db/populateDB.sql", config = @SqlConfig(encoding = "UTF-8"))
+@DirtiesContext
 abstract public class AbstractServiceTest {
     private static final Logger log = LoggerFactory.getLogger("result");
 
