@@ -42,6 +42,7 @@ public class MealRestController {
         int userId = AuthorizedUser.id();
         log.info("get meal {} for userId={}", mealId, userId);
         model.addAttribute("meal",service.get(mealId, userId));
+        model.addAttribute("message","update");
         return "mealForm";
     }
     @GetMapping("/meals/delete/{mealId}")
@@ -64,7 +65,7 @@ public class MealRestController {
     public String createMeal(Model model) {
         int userId = AuthorizedUser.id();
         log.info("create meal for userId={}", userId);
-        model.addAttribute("message","Create meal");
+        model.addAttribute("message","create");
         return "mealForm";
     }
 
@@ -76,11 +77,14 @@ public class MealRestController {
                     LocalDateTime.parse(request.getParameter("dateTime")),
                     request.getParameter("description"),
                     Integer.parseInt(request.getParameter("calories")));
-        System.out.println(request.getParameter("id"));
-            if (request.getParameter("id").isEmpty()) {
-                service.create(meal, userId);
-            } else {
 
+            if (request.getParameter("id").isEmpty()) {
+                System.out.println("Create");
+                service.create(meal, userId);
+
+            } else {
+                System.out.println("Update");
+                meal.setId(Integer.parseInt(request.getParameter("id")));
                 service.update(meal, userId);
             }
 
